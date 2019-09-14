@@ -38,7 +38,9 @@ public class AFFSharedPreferences {
         sharedPreferences = AFFSharedPreferences.context.getSharedPreferences(spName, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         curSPName = spName;
-        Log.i(TAG, "AFFSharedPreferences: " + curSPName);
+        if (BuildConfig.DEBUG) {
+            Log.i(TAG, "AFFSharedPreferences: " + curSPName);
+        }
     }
 
     public static AFFSharedPreferences init(Context context) {

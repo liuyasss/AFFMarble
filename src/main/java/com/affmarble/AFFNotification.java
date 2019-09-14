@@ -3,7 +3,9 @@ package com.affmarble;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 
@@ -12,6 +14,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class AFFNotification {
+
+
+    private AFFNotification() {
+        throw new UnsupportedOperationException(AFFConstant.UNSUPPORTED_OPERATION_EXCEPTION_TIP);
+    }
 
     /**
      * 发送一个 Notification
@@ -44,6 +51,7 @@ public class AFFNotification {
      * 创建一个 简单的通知栏消息
      *
      * @param context
+     * @param intent
      * @param channelId
      * @param title     通知栏标题
      * @param content   通栏问题内容
@@ -51,8 +59,10 @@ public class AFFNotification {
      * @param smallIcon 小 icon
      * @return
      */
-    public static Notification createSimpleNotification(Context context, String channelId, String title, String content, @DrawableRes int largeIcon, @DrawableRes int smallIcon) {
+    public static Notification createSimpleNotification(Context context, Intent intent, String channelId, String title, String content, @DrawableRes int largeIcon, @DrawableRes int smallIcon) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
+        PendingIntent pendingIntent = intent != null ? PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT) : null;
+        builder.setContentIntent(pendingIntent);
         builder.setContentTitle(title);
         builder.setContentText(content);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), largeIcon));
