@@ -29,12 +29,12 @@ public class AFFSharedPreferences {
     private static String curSPName = DEFAULT_SP_NAME;
     private static Context context;
 
-    private AFFSharedPreferences(Context context) {
-        this(context, DEFAULT_SP_NAME);
+    private AFFSharedPreferences() {
+        this(DEFAULT_SP_NAME);
     }
 
-    private AFFSharedPreferences(Context context, String spName) {
-        AFFSharedPreferences.context = context.getApplicationContext();
+    private AFFSharedPreferences(String spName) {
+        AFFSharedPreferences.context = AFFOsmanthus.getApp().getApplicationContext();
         sharedPreferences = AFFSharedPreferences.context.getSharedPreferences(spName, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         curSPName = spName;
@@ -43,18 +43,18 @@ public class AFFSharedPreferences {
         }
     }
 
-    public static AFFSharedPreferences init(Context context) {
+    public static AFFSharedPreferences init() {
         if (affSharedPreferencesUtils == null || !curSPName.equals(DEFAULT_SP_NAME)) {
-            affSharedPreferencesUtils = new AFFSharedPreferences(context);
+            affSharedPreferencesUtils = new AFFSharedPreferences();
         }
         return affSharedPreferencesUtils;
     }
 
-    public static AFFSharedPreferences init(Context context, String spName) {
+    public static AFFSharedPreferences init(String spName) {
         if (affSharedPreferencesUtils == null) {
-            affSharedPreferencesUtils = new AFFSharedPreferences(context, spName);
+            affSharedPreferencesUtils = new AFFSharedPreferences(spName);
         } else if (!spName.equals(curSPName)) {
-            affSharedPreferencesUtils = new AFFSharedPreferences(context, spName);
+            affSharedPreferencesUtils = new AFFSharedPreferences(spName);
         }
         return affSharedPreferencesUtils;
     }

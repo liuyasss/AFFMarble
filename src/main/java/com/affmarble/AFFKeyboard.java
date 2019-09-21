@@ -31,7 +31,7 @@ public final class AFFKeyboard {
      */
     public static void showSoftInput(@NonNull Activity activity) {
         if (!isSoftInputVisible(activity)) {
-            toggleSoftInput(activity);
+            toggleSoftInput();
         }
     }
 
@@ -41,7 +41,7 @@ public final class AFFKeyboard {
      * @param view The view.
      */
     public static void showSoftInput(final Context context, @NonNull final View view) {
-        showSoftInput(context, view, 0);
+        showSoftInput(view, 0);
     }
 
     /**
@@ -51,9 +51,9 @@ public final class AFFKeyboard {
      * @param flags Provides additional operating flags.  Currently may be
      *              0 or have the {@link InputMethodManager#SHOW_IMPLICIT} bit set.
      */
-    public static void showSoftInput(final Context context, @NonNull final View view, final int flags) {
+    public static void showSoftInput(@NonNull final View view, final int flags) {
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) AFFOsmanthus.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
@@ -63,7 +63,7 @@ public final class AFFKeyboard {
             protected void onReceiveResult(int resultCode, Bundle resultData) {
                 if (resultCode == InputMethodManager.RESULT_UNCHANGED_HIDDEN
                         || resultCode == InputMethodManager.RESULT_HIDDEN) {
-                    toggleSoftInput(context);
+                    toggleSoftInput();
                 }
             }
         });
@@ -89,7 +89,7 @@ public final class AFFKeyboard {
             }
             view.requestFocus();
         }
-        hideSoftInput(activity, view);
+        hideSoftInput(view);
     }
 
     /**
@@ -97,9 +97,9 @@ public final class AFFKeyboard {
      *
      * @param view The view.
      */
-    public static void hideSoftInput(final Context context, @NonNull final View view) {
+    public static void hideSoftInput(@NonNull final View view) {
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) AFFOsmanthus.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
@@ -107,9 +107,9 @@ public final class AFFKeyboard {
     /**
      * Toggle the soft input display or not.
      */
-    public static void toggleSoftInput(final Context context) {
+    public static void toggleSoftInput() {
         InputMethodManager imm =
-                (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                (InputMethodManager) AFFOsmanthus.getApp().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm == null) return;
         imm.toggleSoftInput(0, 0);
     }

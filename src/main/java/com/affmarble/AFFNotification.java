@@ -23,15 +23,14 @@ public class AFFNotification {
     /**
      * 发送一个 Notification
      *
-     * @param context
      * @param notification 建议使用 NotificationCompat.Builder 的 build() 构造
      * @param tag
      * @param id
      * @param channelId
      * @param channelName
      */
-    public static void sendNotification(Context context, Notification notification, String tag, int id, String channelId, String channelName) {
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+    public static void sendNotification(Notification notification, String tag, int id, String channelId, String channelName) {
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(AFFOsmanthus.getApp());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     channelId,
@@ -43,14 +42,13 @@ public class AFFNotification {
         notificationManagerCompat.notify(tag, id, notification);
     }
 
-    public static void sendNotification(Context context, Notification notification, int id, String channelId, String channelName) {
-        sendNotification(context, notification, null, id, channelId, channelName);
+    public static void sendNotification(Notification notification, int id, String channelId, String channelName) {
+        sendNotification(notification, null, id, channelId, channelName);
     }
 
     /**
      * 创建一个 简单的通知栏消息
      *
-     * @param context
      * @param intent
      * @param channelId
      * @param title     通知栏标题
@@ -59,7 +57,8 @@ public class AFFNotification {
      * @param smallIcon 小 icon
      * @return
      */
-    public static Notification createSimpleNotification(Context context, Intent intent, String channelId, String title, String content, @DrawableRes int largeIcon, @DrawableRes int smallIcon) {
+    public static Notification createSimpleNotification(Intent intent, String channelId, String title, String content, @DrawableRes int largeIcon, @DrawableRes int smallIcon) {
+        Context context = AFFOsmanthus.getApp();
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
         PendingIntent pendingIntent = intent != null ? PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT) : null;
         builder.setContentIntent(pendingIntent);

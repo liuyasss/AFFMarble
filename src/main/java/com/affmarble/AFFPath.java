@@ -44,11 +44,11 @@ public class AFFPath {
      *
      * @return the path of /data/data/package
      */
-    public static String getInternalAppDataPath(final Context context) {
+    public static String getInternalAppDataPath() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            return context.getApplicationInfo().dataDir;
+            return AFFOsmanthus.getApp().getApplicationInfo().dataDir;
         }
-        return getAbsolutePath(context.getDataDir());
+        return getAbsolutePath(AFFOsmanthus.getApp().getDataDir());
     }
 
     /**
@@ -56,11 +56,11 @@ public class AFFPath {
      *
      * @return the path of /data/data/package/code_cache
      */
-    public static String getInternalAppCodeCacheDir(final Context context) {
+    public static String getInternalAppCodeCacheDir() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return context.getApplicationInfo().dataDir + "/code_cache";
+            return AFFOsmanthus.getApp().getApplicationInfo().dataDir + "/code_cache";
         }
-        return getAbsolutePath(context.getCodeCacheDir());
+        return getAbsolutePath(AFFOsmanthus.getApp().getCodeCacheDir());
     }
 
     /**
@@ -68,8 +68,8 @@ public class AFFPath {
      *
      * @return the path of /data/data/package/cache
      */
-    public static String getInternalAppCachePath(final Context context) {
-        return getAbsolutePath(context.getCacheDir());
+    public static String getInternalAppCachePath() {
+        return getAbsolutePath(AFFOsmanthus.getApp().getCacheDir());
     }
 
     /**
@@ -77,8 +77,8 @@ public class AFFPath {
      *
      * @return the path of /data/data/package/databases
      */
-    public static String getInternalAppDbsPath(final Context context) {
-        return context.getApplicationInfo().dataDir + "/databases";
+    public static String getInternalAppDbsPath() {
+        return AFFOsmanthus.getApp().getApplicationInfo().dataDir + "/databases";
     }
 
     /**
@@ -87,8 +87,8 @@ public class AFFPath {
      * @param name The name of database.
      * @return the path of /data/data/package/databases/name
      */
-    public static String getInternalAppDbPath(final Context context, String name) {
-        return getAbsolutePath(context.getDatabasePath(name));
+    public static String getInternalAppDbPath(String name) {
+        return getAbsolutePath(AFFOsmanthus.getApp().getDatabasePath(name));
     }
 
     /**
@@ -96,8 +96,8 @@ public class AFFPath {
      *
      * @return the path of /data/data/package/files
      */
-    public static String getInternalAppFilesPath(final Context context) {
-        return getAbsolutePath(context.getFilesDir());
+    public static String getInternalAppFilesPath() {
+        return getAbsolutePath(AFFOsmanthus.getApp().getFilesDir());
     }
 
     /**
@@ -105,8 +105,8 @@ public class AFFPath {
      *
      * @return the path of /data/data/package/shared_prefs
      */
-    public static String getInternalAppSpPath(final Context context) {
-        return context.getApplicationInfo().dataDir + "/shared_prefs";
+    public static String getInternalAppSpPath() {
+        return AFFOsmanthus.getApp().getApplicationInfo().dataDir + "/shared_prefs";
     }
 
     /**
@@ -114,11 +114,11 @@ public class AFFPath {
      *
      * @return the path of /data/data/package/no_backup
      */
-    public static String getInternalAppNoBackupFilesPath(final Context context) {
+    public static String getInternalAppNoBackupFilesPath() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            return context.getApplicationInfo().dataDir + "/no_backup";
+            return AFFOsmanthus.getApp().getApplicationInfo().dataDir + "/no_backup";
         }
-        return getAbsolutePath(context.getNoBackupFilesDir());
+        return getAbsolutePath(AFFOsmanthus.getApp().getNoBackupFilesDir());
     }
 
     /**
@@ -239,9 +239,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package
      */
-    public static String getExternalAppDataPath(final Context context) {
+    public static String getExternalAppDataPath() {
         if (isExternalStorageDisable()) return "";
-        File externalCacheDir = context.getExternalCacheDir();
+        File externalCacheDir = AFFOsmanthus.getApp().getExternalCacheDir();
         if (externalCacheDir == null) return "";
         return getAbsolutePath(externalCacheDir.getParentFile());
     }
@@ -251,9 +251,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/cache
      */
-    public static String getExternalAppCachePath(final Context context) {
+    public static String getExternalAppCachePath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalCacheDir());
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalCacheDir());
     }
 
     /**
@@ -261,9 +261,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files
      */
-    public static String getExternalAppFilesPath(final Context context) {
+    public static String getExternalAppFilesPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(null));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(null));
     }
 
     /**
@@ -271,9 +271,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Music
      */
-    public static String getExternalAppMusicPath(final Context context) {
+    public static String getExternalAppMusicPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_MUSIC));
     }
 
     /**
@@ -281,9 +281,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Podcasts
      */
-    public static String getExternalAppPodcastsPath(final Context context) {
+    public static String getExternalAppPodcastsPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_PODCASTS));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_PODCASTS));
     }
 
     /**
@@ -291,9 +291,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Ringtones
      */
-    public static String getExternalAppRingtonesPath(final Context context) {
+    public static String getExternalAppRingtonesPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_RINGTONES));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_RINGTONES));
     }
 
     /**
@@ -301,9 +301,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Alarms
      */
-    public static String getExternalAppAlarmsPath(final Context context) {
+    public static String getExternalAppAlarmsPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_ALARMS));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_ALARMS));
     }
 
     /**
@@ -311,9 +311,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Notifications
      */
-    public static String getExternalAppNotificationsPath(final Context context) {
+    public static String getExternalAppNotificationsPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_NOTIFICATIONS));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_NOTIFICATIONS));
     }
 
     /**
@@ -321,9 +321,9 @@ public class AFFPath {
      *
      * @return path of /storage/emulated/0/Android/data/package/files/Pictures
      */
-    public static String getExternalAppPicturesPath(final Context context) {
+    public static String getExternalAppPicturesPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_PICTURES));
     }
 
     /**
@@ -331,9 +331,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Movies
      */
-    public static String getExternalAppMoviesPath(final Context context) {
+    public static String getExternalAppMoviesPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_MOVIES));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_MOVIES));
     }
 
     /**
@@ -341,9 +341,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Download
      */
-    public static String getExternalAppDownloadPath(final Context context) {
+    public static String getExternalAppDownloadPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS));
     }
 
     /**
@@ -351,9 +351,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/DCIM
      */
-    public static String getExternalAppDcimPath(final Context context) {
+    public static String getExternalAppDcimPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_DCIM));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_DCIM));
     }
 
     /**
@@ -361,12 +361,12 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/data/package/files/Documents
      */
-    public static String getExternalAppDocumentsPath(final Context context) {
+    public static String getExternalAppDocumentsPath() {
         if (isExternalStorageDisable()) return "";
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            return getAbsolutePath(context.getExternalFilesDir(null)) + "/Documents";
+            return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(null)) + "/Documents";
         }
-        return getAbsolutePath(context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS));
+        return getAbsolutePath(AFFOsmanthus.getApp().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS));
     }
 
     /**
@@ -374,9 +374,9 @@ public class AFFPath {
      *
      * @return the path of /storage/emulated/0/Android/obb/package
      */
-    public static String getExternalAppObbPath(final Context context) {
+    public static String getExternalAppObbPath() {
         if (isExternalStorageDisable()) return "";
-        return getAbsolutePath(context.getObbDir());
+        return getAbsolutePath(AFFOsmanthus.getApp().getObbDir());
     }
 
     private static boolean isExternalStorageDisable() {

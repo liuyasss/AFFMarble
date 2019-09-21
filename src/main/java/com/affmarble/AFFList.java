@@ -20,7 +20,7 @@ public class AFFList {
         return list;
     }
 
-    public static <E> LinkedList<E> newLinkedList(E... element){
+    public static <E> LinkedList<E> newLinkedList(E... element) {
         LinkedList<E> list = new LinkedList<>();
         if (element == null || element.length == 0) {
             return list;

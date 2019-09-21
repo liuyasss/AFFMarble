@@ -26,10 +26,9 @@ public class AFFPackage {
      * <p>
      * 需要自行注册 FileProvider
      *
-     * @param context
-     * @param file    the file
+     * @param file the file
      */
-    public static void installApp(Context context, File file) {
+    public static void installApp(File file) {
         if (!isFileExists(file)) {
             if (BuildConfig.DEBUG) {
                 Log.e(TAG, "installApp: the install file not exist");
@@ -41,13 +40,13 @@ public class AFFPackage {
         Uri uri;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileProvider", file);
+            uri = FileProvider.getUriForFile(AFFOsmanthus.getApp(), AFFOsmanthus.getApp().getPackageName() + ".fileProvider", file);
         } else {
             uri = Uri.fromFile(file);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
         intent.setDataAndType(uri, "application/vnd.android.package-archive");
-        context.startActivity(intent);
+        AFFOsmanthus.getApp().startActivity(intent);
     }
 
 

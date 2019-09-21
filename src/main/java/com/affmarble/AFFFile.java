@@ -1185,12 +1185,12 @@ public final class AFFFile {
      *
      * @param file The file.
      */
-    public static void notifySystemToScan(Context context, final File file) {
+    public static void notifySystemToScan(final File file) {
         if (file == null || !file.exists()) return;
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri uri = Uri.fromFile(file);
         intent.setData(uri);
-        context.sendBroadcast(intent);
+        AFFOsmanthus.getApp().sendBroadcast(intent);
     }
 
     /**
@@ -1198,8 +1198,8 @@ public final class AFFFile {
      *
      * @param filePath The path of file.
      */
-    public static void notifySystemToScan(Context context, final String filePath) {
-        notifySystemToScan(context, getFileByPath(filePath));
+    public static void notifySystemToScan(final String filePath) {
+        notifySystemToScan(getFileByPath(filePath));
     }
 
     ///////////////////////////////////////////////////////////////////////////

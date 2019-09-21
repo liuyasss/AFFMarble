@@ -11,7 +11,7 @@ public class AFFConstant {
         throw new UnsupportedOperationException(UNSUPPORTED_OPERATION_EXCEPTION_TIP);
     }
 
-    public static final String UNSUPPORTED_OPERATION_EXCEPTION_TIP = "AFFTime class can't init";
+    public static final String UNSUPPORTED_OPERATION_EXCEPTION_TIP = "AFF class can't init";
 
     public static final int MSEC = 1;
     public static final int SEC = 1000;

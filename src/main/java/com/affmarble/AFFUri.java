@@ -32,10 +32,10 @@ public final class AFFUri {
      * @param file The file.
      * @return uri
      */
-    public static Uri file2Uri(final Context context, @NonNull final File file) {
+    public static Uri file2Uri(@NonNull final File file) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String authority = context.getPackageName() + ".utilcode.provider";
-            return FileProvider.getUriForFile(context, authority, file);
+            String authority = AFFOsmanthus.getApp().getPackageName() + ".utilcode.provider";
+            return FileProvider.getUriForFile(AFFOsmanthus.getApp(), authority, file);
         } else {
             return Uri.fromFile(file);
         }
@@ -47,7 +47,7 @@ public final class AFFUri {
      * @param uri The uri.
      * @return file
      */
-    public static File uri2File(final Context context, @NonNull final Uri uri) {
+    public static File uri2File(@NonNull final Uri uri) {
         Log.d("UriUtils", uri.toString());
         String authority = uri.getAuthority();
         String scheme = uri.getScheme();
@@ -67,7 +67,7 @@ public final class AFFUri {
             return null;
         }// end 0
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-                && DocumentsContract.isDocumentUri(context, uri)) {
+                && DocumentsContract.isDocumentUri(AFFOsmanthus.getApp(), uri)) {
             if ("com.android.externalstorage.documents".equals(authority)) {
                 final String docId = DocumentsContract.getDocumentId(uri);
                 final String[] split = docId.split(":");
@@ -77,7 +77,7 @@ public final class AFFUri {
                 } else {
                     // Below logic is how External Storage provider build URI for documents
                     // http://stackoverflow.com/questions/28605278/android-5-sd-card-label
-                    StorageManager mStorageManager = (StorageManager) context.getSystemService(Context.STORAGE_SERVICE);
+                    StorageManager mStorageManager = (StorageManager) AFFOsmanthus.getApp().getSystemService(Context.STORAGE_SERVICE);
                     try {
                         Class<?> storageVolumeClazz = Class.forName("android.os.storage.StorageVolume");
                         Method getVolumeList = mStorageManager.getClass().getMethod("getVolumeList");
@@ -127,7 +127,7 @@ public final class AFFUri {
                                 Uri.parse("content://downloads/public_downloads"),
                                 Long.valueOf(id)
                         );
-                        return getFileFromUri(context, contentUri, "1_1");
+                        return getFileFromUri(AFFOsmanthus.getApp(), contentUri, "1_1");
                     } catch (NumberFormatException e) {
                         if (id.startsWith("raw:")) {
                             return new File(id.substring(4));
@@ -154,10 +154,10 @@ public final class AFFUri {
                 }
                 final String selection = "_id=?";
                 final String[] selectionArgs = new String[]{split[1]};
-                return getFileFromUri(context, contentUri, selection, selectionArgs, "1_2");
+                return getFileFromUri(AFFOsmanthus.getApp(), contentUri, selection, selectionArgs, "1_2");
             }// end 1_2
             else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
-                return getFileFromUri(context, uri, "1_3");
+                return getFileFromUri(AFFOsmanthus.getApp(), uri, "1_3");
             }// end 1_3
             else {
                 Log.d("UriUtils", uri.toString() + " parse failed. -> 1_4");
@@ -165,7 +165,7 @@ public final class AFFUri {
             }// end 1_4
         }// end 1
         else if (ContentResolver.SCHEME_CONTENT.equals(scheme)) {
-            return getFileFromUri(context, uri, "2");
+            return getFileFromUri(AFFOsmanthus.getApp(), uri, "2");
         }// end 2
         else {
             Log.d("UriUtils", uri.toString() + " parse failed. -> 3");

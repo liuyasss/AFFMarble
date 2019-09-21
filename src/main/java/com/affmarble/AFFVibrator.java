@@ -23,8 +23,8 @@ public final class AFFVibrator {
      * @param milliseconds The number of milliseconds to vibrate.
      */
     @RequiresPermission(VIBRATE)
-    public static void vibrate(final Context context, final long milliseconds) {
-        Vibrator vibrator = getVibrator(context);
+    public static void vibrate(final long milliseconds) {
+        Vibrator vibrator = getVibrator();
         if (vibrator == null) return;
         vibrator.vibrate(milliseconds);
     }
@@ -37,8 +37,8 @@ public final class AFFVibrator {
      * @param repeat  The index into pattern at which to repeat, or -1 if you don't want to repeat.
      */
     @RequiresPermission(VIBRATE)
-    public static void vibrate(final Context context, final long[] pattern, final int repeat) {
-        Vibrator vibrator = getVibrator(context);
+    public static void vibrate(final long[] pattern, final int repeat) {
+        Vibrator vibrator = getVibrator();
         if (vibrator == null) return;
         vibrator.vibrate(pattern, repeat);
     }
@@ -48,15 +48,15 @@ public final class AFFVibrator {
      * <p>Must hold {@code <uses-permission android:name="android.permission.VIBRATE" />}</p>
      */
     @RequiresPermission(VIBRATE)
-    public static void cancel(final Context context) {
-        Vibrator vibrator = getVibrator(context);
+    public static void cancel() {
+        Vibrator vibrator = getVibrator();
         if (vibrator == null) return;
         vibrator.cancel();
     }
 
-    private static Vibrator getVibrator(final Context context) {
+    private static Vibrator getVibrator() {
         if (vibrator == null) {
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            vibrator = (Vibrator) AFFOsmanthus.getApp().getSystemService(Context.VIBRATOR_SERVICE);
         }
         return vibrator;
     }

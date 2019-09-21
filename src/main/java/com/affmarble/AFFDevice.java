@@ -61,8 +61,8 @@ public class AFFDevice {
      *
      * @return {@code true}: yes<br>{@code false}: no
      */
-    public static boolean isTablet(Application application) {
-        return (application.getResources().getConfiguration().screenLayout
+    public static boolean isTablet() {
+        return (AFFOsmanthus.getApp().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }

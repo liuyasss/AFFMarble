@@ -40,8 +40,8 @@ public final class AFFIntent {
      * @param intent The intent.
      * @return {@code true}: yes<br>{@code false}: no
      */
-    public static boolean isIntentAvailable(Context context, final Intent intent) {
-        return context
+    public static boolean isIntentAvailable(final Intent intent) {
+        return AFFOsmanthus.getApp()
                 .getPackageManager()
                 .queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
                 .size() > 0;
@@ -55,8 +55,8 @@ public final class AFFIntent {
      * @param filePath The path of file.
      * @return the intent of install app
      */
-    public static Intent getInstallAppIntent(final Context context, final String filePath) {
-        return getInstallAppIntent(context, getFileByPath(filePath), false);
+    public static Intent getInstallAppIntent(final String filePath) {
+        return getInstallAppIntent(getFileByPath(filePath), false);
     }
 
     /**
@@ -67,8 +67,8 @@ public final class AFFIntent {
      * @param file The file.
      * @return the intent of install app
      */
-    public static Intent getInstallAppIntent(final Context context, final File file) {
-        return getInstallAppIntent(context, file, false);
+    public static Intent getInstallAppIntent(final File file) {
+        return getInstallAppIntent(file, false);
     }
 
     /**
@@ -80,8 +80,8 @@ public final class AFFIntent {
      * @param isNewTask True to add flag of new task, false otherwise.
      * @return the intent of install app
      */
-    public static Intent getInstallAppIntent(final Context context, final String filePath, final boolean isNewTask) {
-        return getInstallAppIntent(context, getFileByPath(filePath), isNewTask);
+    public static Intent getInstallAppIntent(final String filePath, final boolean isNewTask) {
+        return getInstallAppIntent(getFileByPath(filePath), isNewTask);
     }
 
     /**
@@ -93,7 +93,7 @@ public final class AFFIntent {
      * @param isNewTask True to add flag of new task, false otherwise.
      * @return the intent of install app
      */
-    public static Intent getInstallAppIntent(final Context context, final File file, final boolean isNewTask) {
+    public static Intent getInstallAppIntent(final File file, final boolean isNewTask) {
         if (file == null) return null;
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
@@ -102,8 +102,8 @@ public final class AFFIntent {
             data = Uri.fromFile(file);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            String authority = context.getPackageName() + ".utilcode.provider";
-            data = FileProvider.getUriForFile(context, authority, file);
+            String authority = AFFOsmanthus.getApp().getPackageName() + ".utilcode.provider";
+            data = FileProvider.getUriForFile(AFFOsmanthus.getApp(), authority, file);
         }
         intent.setDataAndType(data, type);
         return getIntent(intent, isNewTask);
@@ -138,8 +138,8 @@ public final class AFFIntent {
      * @param packageName The name of the package.
      * @return the intent of launch app
      */
-    public static Intent getLaunchAppIntent(final Context context, final String packageName) {
-        return getLaunchAppIntent(context, packageName, false);
+    public static Intent getLaunchAppIntent(final String packageName) {
+        return getLaunchAppIntent(packageName, false);
     }
 
     /**
@@ -149,8 +149,8 @@ public final class AFFIntent {
      * @param isNewTask   True to add flag of new task, false otherwise.
      * @return the intent of launch app
      */
-    public static Intent getLaunchAppIntent(final Context context, final String packageName, final boolean isNewTask) {
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+    public static Intent getLaunchAppIntent(final String packageName, final boolean isNewTask) {
+        Intent intent = AFFOsmanthus.getApp().getPackageManager().getLaunchIntentForPackage(packageName);
         if (intent == null) return null;
         return getIntent(intent, isNewTask);
     }
@@ -211,8 +211,8 @@ public final class AFFIntent {
      * @param imagePath The path of image.
      * @return the intent of share image
      */
-    public static Intent getShareImageIntent(final Context context, final String content, final String imagePath) {
-        return getShareImageIntent(context, content, imagePath, false);
+    public static Intent getShareImageIntent(final String content, final String imagePath) {
+        return getShareImageIntent(content, imagePath, false);
     }
 
     /**
@@ -223,12 +223,11 @@ public final class AFFIntent {
      * @param isNewTask True to add flag of new task, false otherwise.
      * @return the intent of share image
      */
-    public static Intent getShareImageIntent(final Context context,
-                                             final String content,
+    public static Intent getShareImageIntent(final String content,
                                              final String imagePath,
                                              final boolean isNewTask) {
         if (imagePath == null || imagePath.length() == 0) return null;
-        return getShareImageIntent(context, content, new File(imagePath), isNewTask);
+        return getShareImageIntent(content, new File(imagePath), isNewTask);
     }
 
     /**
@@ -238,8 +237,8 @@ public final class AFFIntent {
      * @param image   The file of image.
      * @return the intent of share image
      */
-    public static Intent getShareImageIntent(final Context context, final String content, final File image) {
-        return getShareImageIntent(context, content, image, false);
+    public static Intent getShareImageIntent(final String content, final File image) {
+        return getShareImageIntent(content, image, false);
     }
 
     /**
@@ -250,12 +249,11 @@ public final class AFFIntent {
      * @param isNewTask True to add flag of new task, false otherwise.
      * @return the intent of share image
      */
-    public static Intent getShareImageIntent(final Context context,
-                                             final String content,
+    public static Intent getShareImageIntent(final String content,
                                              final File image,
                                              final boolean isNewTask) {
         if (image == null || !image.isFile()) return null;
-        return getShareImageIntent(content, file2Uri(context, image), isNewTask);
+        return getShareImageIntent(content, file2Uri(image), isNewTask);
     }
 
     /**
@@ -294,8 +292,8 @@ public final class AFFIntent {
      * @param imagePaths The paths of images.
      * @return the intent of share images
      */
-    public static Intent getShareImageIntent(final Context context, final String content, final LinkedList<String> imagePaths) {
-        return getShareImageIntent(context, content, imagePaths, false);
+    public static Intent getShareImageIntent(final String content, final LinkedList<String> imagePaths) {
+        return getShareImageIntent(content, imagePaths, false);
     }
 
     /**
@@ -306,8 +304,7 @@ public final class AFFIntent {
      * @param isNewTask  True to add flag of new task, false otherwise.
      * @return the intent of share images
      */
-    public static Intent getShareImageIntent(final Context context,
-                                             final String content,
+    public static Intent getShareImageIntent(final String content,
                                              final LinkedList<String> imagePaths,
                                              final boolean isNewTask) {
         if (imagePaths == null || imagePaths.isEmpty()) return null;
@@ -315,7 +312,7 @@ public final class AFFIntent {
         for (String imagePath : imagePaths) {
             files.add(new File(imagePath));
         }
-        return getShareImageIntent(context, content, files, isNewTask);
+        return getShareImageIntent(content, files, isNewTask);
     }
 
     /**
@@ -325,8 +322,8 @@ public final class AFFIntent {
      * @param images  The files of images.
      * @return the intent of share images
      */
-    public static Intent getShareImageIntent(final Context context, final String content, final List<File> images) {
-        return getShareImageIntent(context, content, images, false);
+    public static Intent getShareImageIntent(final String content, final List<File> images) {
+        return getShareImageIntent(content, images, false);
     }
 
     /**
@@ -337,15 +334,14 @@ public final class AFFIntent {
      * @param isNewTask True to add flag of new task, false otherwise.
      * @return the intent of share images
      */
-    public static Intent getShareImageIntent(final Context context,
-                                             final String content,
+    public static Intent getShareImageIntent(final String content,
                                              final List<File> images,
                                              final boolean isNewTask) {
         if (images == null || images.isEmpty()) return null;
         ArrayList<Uri> uris = new ArrayList<>();
         for (File image : images) {
             if (!image.isFile()) continue;
-            uris.add(file2Uri(context, image));
+            uris.add(file2Uri(image));
         }
         return getShareImageIntent(content, uris, isNewTask);
     }
@@ -589,11 +585,11 @@ public final class AFFIntent {
         return true;
     }
 
-    private static Uri file2Uri(final Context context, final File file) {
+    private static Uri file2Uri(final File file) {
         if (file == null) return null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            String authority = context.getPackageName() + ".utilcode.provider";
-            return FileProvider.getUriForFile(context, authority, file);
+            String authority = AFFOsmanthus.getApp().getPackageName() + ".utilcode.provider";
+            return FileProvider.getUriForFile(AFFOsmanthus.getApp(), authority, file);
         } else {
             return Uri.fromFile(file);
         }
