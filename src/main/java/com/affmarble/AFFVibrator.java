@@ -13,7 +13,7 @@ public final class AFFVibrator {
     private static Vibrator vibrator;
 
     private AFFVibrator() {
-        throw new UnsupportedOperationException("u can't instantiate me...");
+        throw new UnsupportedOperationException(AFFConstant.UNSUPPORTED_OPERATION_EXCEPTION_TIP);
     }
 
     /**

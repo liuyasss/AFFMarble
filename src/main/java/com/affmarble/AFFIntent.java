@@ -1,7 +1,6 @@
 package com.affmarble;
 
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -20,14 +19,6 @@ import java.util.List;
 
 import static android.Manifest.permission.CALL_PHONE;
 
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2016/09/23
- *     desc  : utils about intent
- * </pre>
- */
 public final class AFFIntent {
 
     private AFFIntent() {

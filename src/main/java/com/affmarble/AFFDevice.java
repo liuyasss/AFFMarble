@@ -1,10 +1,7 @@
 package com.affmarble;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
 import android.content.res.Configuration;
 import android.os.Build;
-import android.provider.Settings;
 
 import java.io.File;
 

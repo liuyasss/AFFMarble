@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.PermissionChecker;
 
 
@@ -29,33 +28,24 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-
-/**
- * <pre>
- *     author: Blankj
- *     blog  : http://blankj.com
- *     time  : 2017/12/29
- *     desc  : utils about permission
- * </pre>
- */
 public final class AFFPermission {
 
     private static final List<String> PERMISSIONS = getPermissions();
 
-    private static AFFPermission sInstance;
+    private static AFFPermission instance;
 
-    private OnRationaleListener mOnRationaleListener;
-    private SimpleCallback mSimpleCallback;
-    private FullCallback mFullCallback;
-    private ThemeCallback mThemeCallback;
-    private Set<String> mPermissions;
-    private List<String> mPermissionsRequest;
-    private List<String> mPermissionsGranted;
-    private List<String> mPermissionsDenied;
-    private List<String> mPermissionsDeniedForever;
+    private OnRationaleListener onRationaleListener;
+    private SimpleCallback simpleCallback;
+    private FullCallback fullCallback;
+    private ThemeCallback themeCallback;
+    private Set<String> permissions;
+    private List<String> permissionsRequest;
+    private List<String> permissionsGranted;
+    private List<String> permissionsDenied;
+    private List<String> permissionsDeniedForever;
 
-    private static SimpleCallback sSimpleCallback4WriteSettings;
-    private static SimpleCallback sSimpleCallback4DrawOverlays;
+    private static SimpleCallback simpleCallback4WriteSettings;
+    private static SimpleCallback simpleCallback4DrawOverlays;
 
     /**
      * Return the permissions used in application.
@@ -121,7 +111,7 @@ public final class AFFPermission {
             if (callback != null) callback.onGranted();
             return;
         }
-        sSimpleCallback4WriteSettings = callback;
+        simpleCallback4WriteSettings = callback;
         PermissionActivity.start(AFFOsmanthus.getApp(), PermissionActivity.TYPE_WRITE_SETTINGS);
     }
 
@@ -152,7 +142,7 @@ public final class AFFPermission {
             if (callback != null) callback.onGranted();
             return;
         }
-        sSimpleCallback4DrawOverlays = callback;
+        simpleCallback4DrawOverlays = callback;
         PermissionActivity.start(AFFOsmanthus.getApp(), PermissionActivity.TYPE_DRAW_OVERLAYS);
     }
 
@@ -195,15 +185,15 @@ public final class AFFPermission {
     }
 
     private AFFPermission(final String... permissions) {
-        mPermissions = new LinkedHashSet<>();
+        this.permissions = new LinkedHashSet<>();
         for (String permission : permissions) {
             for (String aPermission : AFFPermissionConstant.getPermissions(permission)) {
                 if (PERMISSIONS.contains(aPermission)) {
-                    mPermissions.add(aPermission);
+                    this.permissions.add(aPermission);
                 }
             }
         }
-        sInstance = this;
+        instance = this;
     }
 
     /**
@@ -213,7 +203,7 @@ public final class AFFPermission {
      * @return the single {@link AFFPermission} instance
      */
     public AFFPermission rationale(final OnRationaleListener listener) {
-        mOnRationaleListener = listener;
+        onRationaleListener = listener;
         return this;
     }
 
@@ -224,7 +214,7 @@ public final class AFFPermission {
      * @return the single {@link AFFPermission} instance
      */
     public AFFPermission callback(final SimpleCallback callback) {
-        mSimpleCallback = callback;
+        simpleCallback = callback;
         return this;
     }
 
@@ -235,7 +225,7 @@ public final class AFFPermission {
      * @return the single {@link AFFPermission} instance
      */
     public AFFPermission callback(final FullCallback callback) {
-        mFullCallback = callback;
+        fullCallback = callback;
         return this;
     }
 
@@ -246,7 +236,7 @@ public final class AFFPermission {
      * @return the single {@link AFFPermission} instance
      */
     public AFFPermission theme(final ThemeCallback callback) {
-        mThemeCallback = callback;
+        themeCallback = callback;
         return this;
     }
 
@@ -254,20 +244,20 @@ public final class AFFPermission {
      * Start request.
      */
     public void request() {
-        mPermissionsGranted = new ArrayList<>();
-        mPermissionsRequest = new ArrayList<>();
+        permissionsGranted = new ArrayList<>();
+        permissionsRequest = new ArrayList<>();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            mPermissionsGranted.addAll(mPermissions);
+            permissionsGranted.addAll(permissions);
             requestCallback();
         } else {
-            for (String permission : mPermissions) {
+            for (String permission : permissions) {
                 if (isGranted(permission)) {
-                    mPermissionsGranted.add(permission);
+                    permissionsGranted.add(permission);
                 } else {
-                    mPermissionsRequest.add(permission);
+                    permissionsRequest.add(permission);
                 }
             }
-            if (mPermissionsRequest.isEmpty()) {
+            if (permissionsRequest.isEmpty()) {
                 requestCallback();
             } else {
                 startPermissionActivity();
@@ -277,19 +267,19 @@ public final class AFFPermission {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void startPermissionActivity() {
-        mPermissionsDenied = new ArrayList<>();
-        mPermissionsDeniedForever = new ArrayList<>();
+        permissionsDenied = new ArrayList<>();
+        permissionsDeniedForever = new ArrayList<>();
         PermissionActivity.start(AFFOsmanthus.getApp(), PermissionActivity.TYPE_RUNTIME);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private boolean rationale(final Activity activity) {
         boolean isRationale = false;
-        if (mOnRationaleListener != null) {
-            for (String permission : mPermissionsRequest) {
+        if (onRationaleListener != null) {
+            for (String permission : permissionsRequest) {
                 if (activity.shouldShowRequestPermissionRationale(permission)) {
                     getPermissionsStatus(activity);
-                    mOnRationaleListener.rationale(new OnRationaleListener.ShouldRequest() {
+                    onRationaleListener.rationale(new OnRationaleListener.ShouldRequest() {
                         @Override
                         public void again(boolean again) {
                             activity.finish();
@@ -304,51 +294,51 @@ public final class AFFPermission {
                     break;
                 }
             }
-            mOnRationaleListener = null;
+            onRationaleListener = null;
         }
         return isRationale;
     }
 
     private void getPermissionsStatus(final Activity activity) {
-        for (String permission : mPermissionsRequest) {
+        for (String permission : permissionsRequest) {
             if (isGranted(permission)) {
-                mPermissionsGranted.add(permission);
+                permissionsGranted.add(permission);
             } else {
-                mPermissionsDenied.add(permission);
+                permissionsDenied.add(permission);
                 if (!activity.shouldShowRequestPermissionRationale(permission)) {
-                    mPermissionsDeniedForever.add(permission);
+                    permissionsDeniedForever.add(permission);
                 }
             }
         }
     }
 
     private void requestCallback() {
-        if (mSimpleCallback != null) {
-            if (mPermissionsRequest.size() == 0
-                    || mPermissions.size() == mPermissionsGranted.size()) {
-                mSimpleCallback.onGranted();
+        if (simpleCallback != null) {
+            if (permissionsRequest.size() == 0
+                    || permissions.size() == permissionsGranted.size()) {
+                simpleCallback.onGranted();
             }
 
-            if (!mPermissionsDenied.isEmpty()) {
-                mSimpleCallback.onDenied();
+            if (!permissionsDenied.isEmpty()) {
+                simpleCallback.onDenied();
             }
 
-            mSimpleCallback = null;
+            simpleCallback = null;
         }
-        if (mFullCallback != null) {
-            if (mPermissionsRequest.size() == 0
-                    || mPermissionsGranted.size() > 0) {
-                mFullCallback.onGranted(mPermissionsGranted);
+        if (fullCallback != null) {
+            if (permissionsRequest.size() == 0
+                    || permissionsGranted.size() > 0) {
+                fullCallback.onGranted(permissionsGranted);
             }
 
-            if (!mPermissionsDenied.isEmpty()) {
-                mFullCallback.onDenied(mPermissionsDeniedForever, mPermissionsDenied);
+            if (!permissionsDenied.isEmpty()) {
+                fullCallback.onDenied(permissionsDeniedForever, permissionsDenied);
             }
 
-            mFullCallback = null;
+            fullCallback = null;
         }
-        mOnRationaleListener = null;
-        mThemeCallback = null;
+        onRationaleListener = null;
+        themeCallback = null;
     }
 
     private void onRequestPermissionsResult(final Activity activity) {
@@ -378,27 +368,27 @@ public final class AFFPermission {
                     | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
             int byteExtra = getIntent().getIntExtra(TYPE, TYPE_RUNTIME);
             if (byteExtra == TYPE_RUNTIME) {
-                if (sInstance == null) {
+                if (instance == null) {
                     super.onCreate(savedInstanceState);
                     Log.e("AFFPermission", "request permissions failed");
                     finish();
                     return;
                 }
-                if (sInstance.mThemeCallback != null) {
-                    sInstance.mThemeCallback.onActivityCreate(this);
+                if (instance.themeCallback != null) {
+                    instance.themeCallback.onActivityCreate(this);
                 }
                 super.onCreate(savedInstanceState);
 
-                if (sInstance.rationale(this)) {
+                if (instance.rationale(this)) {
                     return;
                 }
-                if (sInstance.mPermissionsRequest != null) {
-                    int size = sInstance.mPermissionsRequest.size();
+                if (instance.permissionsRequest != null) {
+                    int size = instance.permissionsRequest.size();
                     if (size <= 0) {
                         finish();
                         return;
                     }
-                    requestPermissions(sInstance.mPermissionsRequest.toArray(new String[size]), 1);
+                    requestPermissions(instance.permissionsRequest.toArray(new String[size]), 1);
                 }
             } else if (byteExtra == TYPE_WRITE_SETTINGS) {
                 super.onCreate(savedInstanceState);
@@ -413,8 +403,8 @@ public final class AFFPermission {
         public void onRequestPermissionsResult(int requestCode,
                                                @NonNull String[] permissions,
                                                @NonNull int[] grantResults) {
-            if (sInstance != null && sInstance.mPermissionsRequest != null) {
-                sInstance.onRequestPermissionsResult(this);
+            if (instance != null && instance.permissionsRequest != null) {
+                instance.onRequestPermissionsResult(this);
             }
             finish();
         }
@@ -428,24 +418,24 @@ public final class AFFPermission {
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             if (requestCode == TYPE_WRITE_SETTINGS) {
-                if (sSimpleCallback4WriteSettings == null) return;
+                if (simpleCallback4WriteSettings == null) return;
                 if (isGrantedWriteSettings()) {
-                    sSimpleCallback4WriteSettings.onGranted();
+                    simpleCallback4WriteSettings.onGranted();
                 } else {
-                    sSimpleCallback4WriteSettings.onDenied();
+                    simpleCallback4WriteSettings.onDenied();
                 }
-                sSimpleCallback4WriteSettings = null;
+                simpleCallback4WriteSettings = null;
             } else if (requestCode == TYPE_DRAW_OVERLAYS) {
-                if (sSimpleCallback4DrawOverlays == null) return;
+                if (simpleCallback4DrawOverlays == null) return;
                 new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (isGrantedDrawOverlays()) {
-                            sSimpleCallback4DrawOverlays.onGranted();
+                            simpleCallback4DrawOverlays.onGranted();
                         } else {
-                            sSimpleCallback4DrawOverlays.onDenied();
+                            simpleCallback4DrawOverlays.onDenied();
                         }
-                        sSimpleCallback4DrawOverlays = null;
+                        simpleCallback4DrawOverlays = null;
                     }
                 }, 100);
             }

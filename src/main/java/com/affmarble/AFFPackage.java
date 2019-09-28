@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -54,6 +55,33 @@ public class AFFPackage {
 
     private static boolean isFileExists(final File file) {
         return file != null && file.exists();
+    }
+
+
+    /**
+     * 打开 app store
+     *
+     * @param context
+     * @param appId applicationId
+     */
+    public static void openAppStore(Context context, String appId) {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + appId);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
+            try {
+                context.startActivity(new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=" + appId)));
+            } catch (Exception exception) {
+                e.printStackTrace();
+                Toast.makeText(context, "Cannot find GooglePlay", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 }
