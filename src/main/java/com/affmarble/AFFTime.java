@@ -1,5 +1,7 @@
 package com.affmarble;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.NonNull;
 
 import java.text.DateFormat;
@@ -18,6 +20,8 @@ public final class AFFTime {
         return getDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
+    public static final String TIME_YEAR_MONTH_DAY = "yyyy-MM-dd";
+
     private static SimpleDateFormat getDateFormat(String pattern) {
         SimpleDateFormat simpleDateFormat = SDF_THREAD_LOCAL.get();
         if (simpleDateFormat == null) {
@@ -31,6 +35,11 @@ public final class AFFTime {
 
     private AFFTime() {
         throw new UnsupportedOperationException("u can't instantiate me...");
+    }
+
+    public static String getDateNow(String pattern) {
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(new Date(System.currentTimeMillis()));
     }
 
     /**

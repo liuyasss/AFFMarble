@@ -379,6 +379,22 @@ public final class AFFRegex {
      */
     public static final String REGEX_NEGATIVE_FLOAT = "^-[1-9]\\d*\\.\\d*|-0\\.\\d*[1-9]\\d*$";
 
+    /**
+     * Regex of normal password
+     * Can contain numbers, letters, underscores, and both numbers and letters, and the length should be between 8-16
+     */
+    public static final String REGEX_PASSWORD = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{8,16}$";
+
+    /**
+     * Regex of lowercase letter
+     */
+    public static final String REGEX_LETTER_LOWERCASE = "^.*[A-Z]+.*$";
+
+    /**
+     * Regex of capital letter
+     */
+    public static final String REGEX_LETTER_CAPITAL = "^.*[a-z]+.*$";
+
 
 }
 
