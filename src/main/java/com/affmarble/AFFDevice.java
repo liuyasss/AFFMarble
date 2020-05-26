@@ -1,9 +1,17 @@
 package com.affmarble;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.telephony.TelephonyManager;
+
+import androidx.core.app.ActivityCompat;
 
 import java.io.File;
+
+import static android.content.Context.TELEPHONY_SERVICE;
 
 public class AFFDevice {
 
@@ -62,6 +70,26 @@ public class AFFDevice {
         return (AFFOsmanthus.getApp().getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    /**
+     * Return device id
+     *
+     * @param context
+     * @return
+     */
+    public static String getDeviceId(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+        String id;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            id = telephonyManager.getImei();
+        } else {
+            id = telephonyManager.getDeviceId();
+        }
+        return id;
     }
 
 }
