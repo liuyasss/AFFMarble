@@ -20,7 +20,7 @@ public final class AFFTime {
         return getDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
-    public static final String TIME_YEAR_MONTH_DAY = "yyyy-MM-dd";
+    public static final String YYYY_MM_DD = "yyyy-MM-dd";
 
     private static SimpleDateFormat getDateFormat(String pattern) {
         SimpleDateFormat simpleDateFormat = SDF_THREAD_LOCAL.get();
