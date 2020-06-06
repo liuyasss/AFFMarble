@@ -388,12 +388,12 @@ public final class AFFRegex {
     /**
      * Regex of lowercase letter
      */
-    public static final String REGEX_LETTER_LOWERCASE = "^.*[A-Z]+.*$";
+    public static final String REGEX_LETTER_LOWERCASE = "^.*[a-z]+.*$";
 
     /**
      * Regex of capital letter
      */
-    public static final String REGEX_LETTER_CAPITAL = "^.*[a-z]+.*$";
+    public static final String REGEX_LETTER_CAPITAL = "^.*[A-Z]+.*$";
 
 
 }
