@@ -395,6 +395,21 @@ public final class AFFRegex {
      */
     public static final String REGEX_LETTER_CAPITAL = "^.*[A-Z]+.*$";
 
+    /**
+     * Regex of same numbers limit six
+     */
+    public static final String REGEX_SAME_NUMBERS_LIMIT_SIX = "^([0-9])\\1{5}$";
+
+    /**
+     * Regex of consecutive numbers limit six
+     * eg:123456
+     */
+    public static final String REGEX_CONSECUTIVE_NUMBERS = "^((?:0(?=1)|1(?=2)|2(?=3)|3(?=4)|4(?=5)|5(?=6)|6(?=7)|7(?=8)|8(?=9)|9(?=0)){5}\\d)$";
+
+    /**
+     * Regex all number
+     */
+    public static final String REGEX_ALL_NUMBER = "^[0-9]*$";
 
 }
 

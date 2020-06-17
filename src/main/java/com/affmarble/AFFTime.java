@@ -20,7 +20,10 @@ public final class AFFTime {
         return getDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
-    public static final String YYYY_MM_DD = "yyyy-MM-dd";
+    public static final String yyyy_MM_dd = "yyyy-MM-dd";
+    public static final String yyyy_MM_dd_HH_mm_ss = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String file_yyyy_MM_dd_HH_mm_ss = "yyyy_MM_dd_HH_mm_ss";
 
     private static SimpleDateFormat getDateFormat(String pattern) {
         SimpleDateFormat simpleDateFormat = SDF_THREAD_LOCAL.get();
